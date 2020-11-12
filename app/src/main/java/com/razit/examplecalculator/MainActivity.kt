@@ -1,15 +1,24 @@
 package com.razit.examplecalculator
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
+import java.math.RoundingMode
+import java.text.DecimalFormat
 
 class MainActivity : AppCompatActivity() {
 
     private var status = 5
     private var error = false
     private var result : Double? = null
+
+    companion object{
+        const val NUMBER_INPUT_1 = "Bilangan pertama wajib di isi"
+        const val NUMBER_INPUT_2 = "Bilangan kedua wajib di isi"
+        const val NUMBER_INPUT_3 = "Bilangan ketiga wajib di isi"
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,44 +40,68 @@ class MainActivity : AppCompatActivity() {
         btnAdd.setOnClickListener {
             resetStatus()
             checkInput()
-            sumNumber()
+            hideKeyboard()
+            if(!error)
+                sumNumber()
+            else
+                tv_result.text = ""
         }
 
         btnMin.setOnClickListener {
             resetStatus()
             checkInput()
-            minNumber()
+            hideKeyboard()
+            if(!error)
+                minNumber()
+            else
+                tv_result.text = ""
         }
 
         btnDiv.setOnClickListener {
             resetStatus()
             checkInput()
-            divNumber()
+            hideKeyboard()
+            if(!error)
+                divNumber()
+            else
+                tv_result.text = ""
+
         }
 
         btnMultiple.setOnClickListener {
             resetStatus()
             checkInput()
-            multipleNumber()
+            hideKeyboard()
+            if(!error)
+                multipleNumber()
+            else
+                tv_result.text = ""
         }
+    }
 
-
+    fun hideKeyboard() {
+        // Check if no view has focus:
+        val view = currentFocus
+        if (view != null) {
+            val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view.windowToken, 0)
+        }
     }
 
 
     private fun sumNumber(){
         when (status) {
             1 -> {
-                result = sumNumbers(edBil1.text.toString().toDouble(),edBil2.text.toString().toDouble(),edBil3.text.toString().toDouble())
+                result = sumNumbers(edBil1.text.toString().toDouble(), edBil2.text.toString().toDouble(), edBil3.text.toString().toDouble())
             }
             2 -> {
-                result =sumNumbers(edBil1.text.toString().toDouble(),edBil2.text.toString().toDouble())
+                result = sumNumbers(edBil1.text.toString().toDouble(), edBil2.text.toString().toDouble())
             }
             3 -> {
-                result = sumNumbers(edBil2.text.toString().toDouble(),edBil3.text.toString().toDouble())
+                result = sumNumbers(edBil2.text.toString().toDouble(), edBil3.text.toString().toDouble())
             }
             4 -> {
-                result =sumNumbers(edBil1.text.toString().toDouble(),edBil3.text.toString().toDouble())
+                result = sumNumbers(edBil1.text.toString().toDouble(), edBil3.text.toString().toDouble())
             }
             5 -> {
                 error = !error
@@ -80,16 +113,16 @@ class MainActivity : AppCompatActivity() {
     private fun minNumber(){
         when (status) {
             1 -> {
-                result = edBil1.text.toString().toDouble()-edBil2.text.toString().toDouble()-edBil3.text.toString().toDouble()
+                result = edBil1.text.toString().toDouble() - edBil2.text.toString().toDouble() - edBil3.text.toString().toDouble()
             }
             2 -> {
-                result = edBil1.text.toString().toDouble()-edBil2.text.toString().toDouble()
+                result = edBil1.text.toString().toDouble() - edBil2.text.toString().toDouble()
             }
             3 -> {
                 result = edBil2.text.toString().toDouble() - edBil3.text.toString().toDouble()
             }
             4 -> {
-                result =edBil1.text.toString().toDouble() - edBil3.text.toString().toDouble()
+                result = edBil1.text.toString().toDouble() - edBil3.text.toString().toDouble()
             }
             5 -> {
                 error = !error
@@ -101,7 +134,7 @@ class MainActivity : AppCompatActivity() {
     private fun divNumber(){
         when (status) {
             1 -> {
-                result = edBil1.text.toString().toDouble() / edBil2.text.toString().toDouble()/edBil3.text.toString().toDouble()
+                result = edBil1.text.toString().toDouble() / edBil2.text.toString().toDouble() / edBil3.text.toString().toDouble()
             }
             2 -> {
                 result = edBil1.text.toString().toDouble() / edBil2.text.toString().toDouble()
@@ -110,7 +143,7 @@ class MainActivity : AppCompatActivity() {
                 result = edBil2.text.toString().toDouble() / edBil3.text.toString().toDouble()
             }
             4 -> {
-                result =edBil1.text.toString().toDouble() / edBil3.text.toString().toDouble()
+                result = edBil1.text.toString().toDouble() / edBil3.text.toString().toDouble()
             }
             5 -> {
                 error = !error
@@ -131,7 +164,7 @@ class MainActivity : AppCompatActivity() {
                 result = edBil2.text.toString().toDouble() * edBil3.text.toString().toDouble()
             }
             4 -> {
-                result =edBil1.text.toString().toDouble() * edBil3.text.toString().toDouble()
+                result = edBil1.text.toString().toDouble() * edBil3.text.toString().toDouble()
             }
             5 -> {
                 error = !error
@@ -145,16 +178,69 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun checkInput(){
-        status = if(checkbox1.isChecked && checkbox2.isChecked && checkbox3.isChecked){
-            1
+        if(checkbox1.isChecked && checkbox2.isChecked && checkbox3.isChecked){
+            when {
+                edBil1.text.toString() == "" -> {
+                    showMessageError(NUMBER_INPUT_1)
+                    error = !error
+                }
+                edBil2.text.toString() == "" -> {
+                    showMessageError(NUMBER_INPUT_2)
+                    error = !error
+                }
+                edBil3.text.toString() == "" -> {
+                    showMessageError(NUMBER_INPUT_3)
+                    error = !error
+                }
+                else -> {
+                    status = 1
+                }
+            }
         }else if(checkbox1.isChecked && checkbox2.isChecked){
-            2
+            when {
+                edBil1.text.toString() == "" -> {
+                    showMessageError(NUMBER_INPUT_1)
+                    error = !error
+                }
+                edBil2.text.toString() == "" -> {
+                    showMessageError(NUMBER_INPUT_2)
+                    error = !error
+                }
+                else -> {
+                    status = 2
+                }
+            }
+
         }else if(checkbox2.isChecked && checkbox3.isChecked){
-            3
+            when {
+                edBil2.text.toString() == "" -> {
+                    showMessageError(NUMBER_INPUT_2)
+                    error = !error
+                }
+                edBil3.text.toString() == "" -> {
+                    showMessageError(NUMBER_INPUT_3)
+                    error = !error
+                }
+                else -> {
+                    status = 3
+                }
+            }
         }else if(checkbox1.isChecked && checkbox3.isChecked){
-            4
+            when {
+                edBil1.text.toString() == "" -> {
+                    showMessageError(NUMBER_INPUT_1)
+                    error = !error
+                }
+                edBil3.text.toString() == "" -> {
+                    showMessageError(NUMBER_INPUT_3)
+                    error = !error
+                }
+                else -> {
+                    status = 4
+                }
+            }
         } else{
-            5
+            status = 5
         }
     }
 
@@ -165,16 +251,20 @@ class MainActivity : AppCompatActivity() {
 
     private fun result(){
         if(error){
-            messageError()
+            showMessageError("kemungkinan anda belum memasukan bilangan atau hanya memasukan 1 buah bilangan")
             tv_result.text = ""
         }else{
-            tv_result.text = result.toString()
+            val df = DecimalFormat("#.##")
+            df.roundingMode = RoundingMode.CEILING
+            tv_result.text = df.format(result)
         }
     }
 
-    private fun messageError(){
-        Toast.makeText(this,"Terjadi kesalahan ketika proses perhitungan,kemungkinan angka yang anda masukan cuman satu buah atau tidak sama sekali",Toast.LENGTH_SHORT).show()
+
+    private fun showMessageError(msg: String){
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
     }
+
 
 
 

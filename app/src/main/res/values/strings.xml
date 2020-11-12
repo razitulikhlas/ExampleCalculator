@@ -5,4 +5,7 @@
     <string name="multiple">*</string>
     <string name="min">-</string>
     <string name="result">Hasil :</string>
+    <string name="bilangan_pertama">Bilangan pertama</string>
+    <string name="bilangan_kedua">Bilangan kedua</string>
+    <string name="bilangan_ketiga">Bilangan ketiga</string>
 </resources>

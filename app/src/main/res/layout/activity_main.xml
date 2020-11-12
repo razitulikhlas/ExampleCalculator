@@ -22,6 +22,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/edBil1"
                 android:inputType="number"
+                android:hint="@string/bilangan_pertama"
                 />
         </com.google.android.material.textfield.TextInputLayout>
         <androidx.appcompat.widget.AppCompatCheckBox
@@ -52,6 +53,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/edBil2"
                 android:inputType="number"
+                android:hint="@string/bilangan_kedua"
                 />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -83,7 +85,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/edBil3"
-                android:inputType="number"/>
+                android:inputType="number"
+                android:hint="@string/bilangan_ketiga"
+                />
         </com.google.android.material.textfield.TextInputLayout>
         <androidx.appcompat.widget.AppCompatCheckBox
             android:layout_width="wrap_content"
