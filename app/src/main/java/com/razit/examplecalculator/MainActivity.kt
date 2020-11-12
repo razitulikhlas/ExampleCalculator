@@ -30,29 +30,20 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
         btnAdd.setOnClickListener {
-            hideKeyboard()
-            reset()
             operator(SUM)
         }
 
         btnMin.setOnClickListener {
-            hideKeyboard()
-            reset()
             operator(MIN)
         }
 
         btnDiv.setOnClickListener {
-            hideKeyboard()
-            reset()
             operator(DIV)
 
         }
 
         btnMultiple.setOnClickListener {
-            hideKeyboard()
-            reset()
             operator(MULTIPLE)
         }
     }
@@ -67,6 +58,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun operator(operator : String){
+        reset()
+        hideKeyboard()
         if(checkbox1.isChecked ){
             if(edBil1.text.isNullOrEmpty()){
                 showMessageError(NUMBER_INPUT_1)
@@ -160,7 +153,7 @@ class MainActivity : AppCompatActivity() {
             tv_result.text = df.format(result)
         }
     }
-    
+
     private fun reset(){
         bil1 = 0.0
         bil2 = 0.0
