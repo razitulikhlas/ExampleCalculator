@@ -24,18 +24,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        checkbox1.setOnClickListener {
-            ed_layout1.isEnabled = checkbox1.isChecked
-        }
-
-        checkbox2.setOnClickListener {
-            ed_layout2.isEnabled = checkbox2.isChecked
-        }
-
-        checkbox3.setOnClickListener {
-            ed_layout3.isEnabled = checkbox3.isChecked
-        }
-
 
         btnAdd.setOnClickListener {
             resetStatus()
@@ -251,7 +239,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun result(){
         if(error){
-            showMessageError("kemungkinan anda belum memasukan bilangan atau hanya memasukan 1 buah bilangan")
+            showMessageError("Silahkan ceklis dua buah checkbox untuk melakukan proses perhitungan")
             tv_result.text = ""
         }else{
             val df = DecimalFormat("#.##")
