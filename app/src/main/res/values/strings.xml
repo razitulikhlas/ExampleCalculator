@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">ExampleCalculator</string>
+    <string name="add">+</string>
+    <string name="div">/</string>
+    <string name="multiple">*</string>
+    <string name="min">-</string>
+    <string name="result">Hasil :</string>
+</resources>
