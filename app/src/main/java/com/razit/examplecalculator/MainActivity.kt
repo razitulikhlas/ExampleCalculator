@@ -10,60 +10,50 @@ import java.text.DecimalFormat
 
 class MainActivity : AppCompatActivity() {
 
-    private var status = 5
     private var error = false
     private var result : Double? = null
+    private var bil1 = 0.0
+    private var bil2 = 0.0
+    private var bil3 = 0.0
 
     companion object{
         const val NUMBER_INPUT_1 = "Bilangan pertama wajib di isi"
         const val NUMBER_INPUT_2 = "Bilangan kedua wajib di isi"
         const val NUMBER_INPUT_3 = "Bilangan ketiga wajib di isi"
+        const val SUM = "tambah"
+        const val MIN = "kurang"
+        const val DIV = "bagi"
+        const val MULTIPLE = "kali"
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+
         btnAdd.setOnClickListener {
-            resetStatus()
-            checkInput()
             hideKeyboard()
-            if(!error)
-                sumNumber()
-            else
-                tv_result.text = ""
+            reset()
+            operator(SUM)
         }
 
         btnMin.setOnClickListener {
-            resetStatus()
-            checkInput()
             hideKeyboard()
-            if(!error)
-                minNumber()
-            else
-                tv_result.text = ""
+            reset()
+            operator(MIN)
         }
 
         btnDiv.setOnClickListener {
-            resetStatus()
-            checkInput()
             hideKeyboard()
-            if(!error)
-                divNumber()
-            else
-                tv_result.text = ""
+            reset()
+            operator(DIV)
 
         }
 
         btnMultiple.setOnClickListener {
-            resetStatus()
-            checkInput()
             hideKeyboard()
-            if(!error)
-                multipleNumber()
-            else
-                tv_result.text = ""
+            reset()
+            operator(MULTIPLE)
         }
     }
 
@@ -76,168 +66,91 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
-    private fun sumNumber(){
-        when (status) {
-            1 -> {
-                result = sumNumbers(edBil1.text.toString().toDouble(), edBil2.text.toString().toDouble(), edBil3.text.toString().toDouble())
-            }
-            2 -> {
-                result = sumNumbers(edBil1.text.toString().toDouble(), edBil2.text.toString().toDouble())
-            }
-            3 -> {
-                result = sumNumbers(edBil2.text.toString().toDouble(), edBil3.text.toString().toDouble())
-            }
-            4 -> {
-                result = sumNumbers(edBil1.text.toString().toDouble(), edBil3.text.toString().toDouble())
-            }
-            5 -> {
-                error = !error
+    private fun operator(operator : String){
+        if(checkbox1.isChecked ){
+            if(edBil1.text.isNullOrEmpty()){
+                showMessageError(NUMBER_INPUT_1)
+                return
+            } else{
+                bil1 = edBil1.text.toString().toDouble()
             }
         }
-        result()
-    }
 
-    private fun minNumber(){
-        when (status) {
-            1 -> {
-                result = edBil1.text.toString().toDouble() - edBil2.text.toString().toDouble() - edBil3.text.toString().toDouble()
-            }
-            2 -> {
-                result = edBil1.text.toString().toDouble() - edBil2.text.toString().toDouble()
-            }
-            3 -> {
-                result = edBil2.text.toString().toDouble() - edBil3.text.toString().toDouble()
-            }
-            4 -> {
-                result = edBil1.text.toString().toDouble() - edBil3.text.toString().toDouble()
-            }
-            5 -> {
-                error = !error
+        if(checkbox2.isChecked){
+            if(edBil2.text.isNullOrEmpty()){
+                showMessageError(NUMBER_INPUT_2)
+                return
+            } else{
+                bil2 = edBil2.text.toString().toDouble()
             }
         }
-        result()
-    }
 
-    private fun divNumber(){
-        when (status) {
-            1 -> {
-                result = edBil1.text.toString().toDouble() / edBil2.text.toString().toDouble() / edBil3.text.toString().toDouble()
-            }
-            2 -> {
-                result = edBil1.text.toString().toDouble() / edBil2.text.toString().toDouble()
-            }
-            3 -> {
-                result = edBil2.text.toString().toDouble() / edBil3.text.toString().toDouble()
-            }
-            4 -> {
-                result = edBil1.text.toString().toDouble() / edBil3.text.toString().toDouble()
-            }
-            5 -> {
-                error = !error
+        if(checkbox3.isChecked){
+            if(edBil3.text.isNullOrEmpty()){
+                showMessageError(NUMBER_INPUT_3)
+                return
+            } else{
+                bil3 = edBil3.text.toString().toDouble()
             }
         }
-        result()
-    }
 
-    private fun multipleNumber(){
-        when (status) {
-            1 -> {
-                result = edBil1.text.toString().toDouble() * edBil2.text.toString().toDouble() * edBil3.text.toString().toDouble()
-            }
-            2 -> {
-                result = edBil1.text.toString().toDouble() * edBil2.text.toString().toDouble()
-            }
-            3 -> {
-                result = edBil2.text.toString().toDouble() * edBil3.text.toString().toDouble()
-            }
-            4 -> {
-                result = edBil1.text.toString().toDouble() * edBil3.text.toString().toDouble()
-            }
-            5 -> {
-                error = !error
-            }
+        if(operator == SUM){
+            result = bil1 + bil2 + bil3
         }
-        result()
-    }
-    private fun sumNumbers(vararg number: Double): Double {
-        return number.sum()
-    }
 
 
-    private fun checkInput(){
         if(checkbox1.isChecked && checkbox2.isChecked && checkbox3.isChecked){
-            when {
-                edBil1.text.toString() == "" -> {
-                    showMessageError(NUMBER_INPUT_1)
-                    error = !error
+            when (operator) {
+                DIV -> {
+                    result = bil1 / bil2 / bil3
                 }
-                edBil2.text.toString() == "" -> {
-                    showMessageError(NUMBER_INPUT_2)
-                    error = !error
+                MULTIPLE -> {
+                    result = bil1 * bil2 * bil3
                 }
-                edBil3.text.toString() == "" -> {
-                    showMessageError(NUMBER_INPUT_3)
-                    error = !error
-                }
-                else -> {
-                    status = 1
+                MIN -> {
+                    result = bil1 - bil2 - bil3
                 }
             }
         }else if(checkbox1.isChecked && checkbox2.isChecked){
-            when {
-                edBil1.text.toString() == "" -> {
-                    showMessageError(NUMBER_INPUT_1)
-                    error = !error
+            when (operator) {
+                DIV -> {
+                    result = bil1 / bil2
                 }
-                edBil2.text.toString() == "" -> {
-                    showMessageError(NUMBER_INPUT_2)
-                    error = !error
+                MULTIPLE -> {
+                    result = bil1 * bil2
                 }
-                else -> {
-                    status = 2
-                }
-            }
-
-        }else if(checkbox2.isChecked && checkbox3.isChecked){
-            when {
-                edBil2.text.toString() == "" -> {
-                    showMessageError(NUMBER_INPUT_2)
-                    error = !error
-                }
-                edBil3.text.toString() == "" -> {
-                    showMessageError(NUMBER_INPUT_3)
-                    error = !error
-                }
-                else -> {
-                    status = 3
+                MIN -> {
+                    result = bil1 - bil2
                 }
             }
         }else if(checkbox1.isChecked && checkbox3.isChecked){
-            when {
-                edBil1.text.toString() == "" -> {
-                    showMessageError(NUMBER_INPUT_1)
-                    error = !error
+            when (operator) {
+                DIV -> {
+                    result = bil1 / bil3
                 }
-                edBil3.text.toString() == "" -> {
-                    showMessageError(NUMBER_INPUT_3)
-                    error = !error
+                MULTIPLE -> {
+                    result = bil1 * bil3
                 }
-                else -> {
-                    status = 4
+                MIN -> {
+                    result = bil1 - bil3
                 }
             }
-        } else{
-            status = 5
+        }else if(checkbox2.isChecked && checkbox3.isChecked){
+            when (operator) {
+                DIV -> {
+                    result = bil2 / bil3
+                }
+                MULTIPLE -> {
+                    result = bil2 * bil3
+                }
+                MIN -> {
+                    result = bil2 - bil3
+                }
+            }
+        }else{
+            error = !error
         }
-    }
 
-    private fun resetStatus(){
-        status = 5
-        error = false
-    }
-
-    private fun result(){
         if(error){
             showMessageError("Silahkan ceklis dua buah checkbox untuk melakukan proses perhitungan")
             tv_result.text = ""
@@ -247,20 +160,16 @@ class MainActivity : AppCompatActivity() {
             tv_result.text = df.format(result)
         }
     }
-
+    
+    private fun reset(){
+        bil1 = 0.0
+        bil2 = 0.0
+        bil3 = 0.0
+        error = false
+    }
 
     private fun showMessageError(msg: String){
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
     }
-
-
-
-
-
-
-
-
-
-
 
 }
