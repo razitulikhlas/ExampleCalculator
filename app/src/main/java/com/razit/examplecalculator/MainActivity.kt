@@ -79,7 +79,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun hideKeyboard() {
+    private fun hideKeyboard() {
         // Check if no view has focus:
         val view = currentFocus
         if (view != null) {
